@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'; // Adjust path if needed
+import { authOptions } from '@/lib/authOptions'; // Changed import path
 import { getCalendarCollection } from '@/lib/dbUtils';
 // Remove date-fns imports if no longer needed after switching to string comparison
 // import { parse, isWithinInterval, isValid } from 'date-fns';

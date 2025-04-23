@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path if needed
+import { authOptions } from '@/lib/authOptions'; // Changed import path
 // Remove local DB imports if moved to dbUtils
 // import clientPromise from "@/lib/mongodb";
 // import { MongoClient, Db } from 'mongodb';
