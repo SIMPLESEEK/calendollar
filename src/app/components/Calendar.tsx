@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { format, addDays, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import YearView from './YearView';
 import MonthView from './MonthView';
@@ -187,19 +187,28 @@ export default function Calendar({ userId }: CalendarProps) {
   // 获取天气数据 (现在调用后端 API)
   const fetchWeather = async (city: string): Promise<Weather | null> => {
     if (!city) return null;
-    console.log(`[fetchWeather] Attempting to fetch weather for city: "${city}"`);
+    console.log(`[fetchWeather] Attempting to fetch weather for city: \"${city}\"`);
     try {
       // 调用后端 API 路由
       const response = await axios.get(`/api/weather?city=${encodeURIComponent(city)}`);
       if (response.status === 200) {
         return response.data; // 后端返回标准化后的 Weather 对象
       } else {
-        console.error(`获取天气失败 (${response.status}): ${response.data?.message || 'Unknown error'}`);
+        // Use response.data safely
+        const errorMessage = response.data?.message || 'Unknown error';
+        console.error(`获取天气失败 (${response.status}): ${errorMessage}`);
         return null;
       }
-    } catch (error: any) {
-      console.error(`调用天气 API 失败 for city "${city}":`, error.response?.data || error.message || error);
-      return null;
+    } catch (error: unknown) { // Changed any to unknown again
+       let errorMessage = '未知错误';
+       if (axios.isAxiosError(error)) {
+           // Safely access error.response properties
+           errorMessage = error.response?.data?.message || error.message || 'Axios 请求错误';
+       } else if (error instanceof Error) {
+           errorMessage = error.message;
+       }
+       console.error(`调用天气 API 失败 for city \"${city}\":`, errorMessage, error); // Log original error too
+       return null;
     }
   };
 
