@@ -13,7 +13,7 @@ import { getCalendarCollection } from '@/lib/dbUtils'; // Import the helper func
 // async function getCalendarCollection(): Promise<{ ... }> { ... }
 
 // GET handler to fetch calendar data for the logged-in user
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {

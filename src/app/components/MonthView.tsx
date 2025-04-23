@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { 
   format, 
   startOfMonth, 
@@ -106,7 +106,7 @@ export default function MonthView({
         ))}
         
         {/* 月历前空白 */}
-        {Array.from({ length: (startDay === 0 ? 6 : startDay - 1) }).map((_, index) => (
+        {Array.from({ length: (startDay === 0 ? 6 : startDay - 1) }, (value_not_used, index) => (
           <div key={`empty-${index}`} className="border-r border-b border-amber-200 h-20 sm:h-28 lg:h-24" />
         ))}
         
@@ -149,7 +149,7 @@ export default function MonthView({
         })}
         
         {/* 补齐最后一行空白 */}
-        {Array.from({ length: (7 - (days.length + (startDay === 0 ? 6 : startDay - 1)) % 7) % 7 }).map((_, index) => (
+        {Array.from({ length: (7 - (days.length + (startDay === 0 ? 6 : startDay - 1)) % 7) % 7 }, (value_not_used, index) => (
           <div key={`empty-end-${index}`} className="border-r border-b border-amber-200 h-20 sm:h-28 lg:h-24 last:border-r-0" />
         ))}
       </div>

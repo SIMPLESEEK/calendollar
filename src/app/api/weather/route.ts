@@ -88,8 +88,8 @@ export async function GET(request: Request) {
         return NextResponse.json({ message: '获取实时天气数据格式错误' }, { status: 500 });
     }
 
-  } catch (error: any) {
-    console.error(`[Weather API] Error fetching real-time weather for city \"${cityParam}\":`, error.message || error);
+  } catch (error: unknown) {
+    console.error(`[Weather API] Error fetching real-time weather for city \"${cityParam}\":`, error instanceof Error ? error.message : error);
     return NextResponse.json({ message: 'Internal Server Error while fetching weather' }, { status: 500 });
   }
 } 
