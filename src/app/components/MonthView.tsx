@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState } from 'react';
 import { 
   format, 
   startOfMonth, 
@@ -11,20 +11,10 @@ import {
   addMonths,
   subMonths,
   getDay,
-  isSameDay
 } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import { CalendarState, CityRecord, Weather } from '@/types';
+import { CalendarState, CityRecord } from '@/types';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-
-// 简单的天气图标映射 (后续可以用 react-icons 替换)
-const weatherIconMap: { [key: string]: string } = {
-  sun: '☀️', // 晴朗
-  cloud: '☁️', // 多云
-  overcast: '🌥️', // 阴天 (假设)
-  rain: '🌧️', // 小雨/大雨 (简化)
-  // 可以根据实际 API 返回值添加更多图标
-};
 
 // 简单的城市缩写函数 (取前两个字符大写)
 // TODO: 处理单字城市和潜在冲突 (例如 广州 vs 赣州)

@@ -7,22 +7,19 @@ import {
   endOfWeek, 
   eachDayOfInterval, 
   isToday,
-  addWeeks,
-  subWeeks,
   isSameDay,
   addDays,
   subDays
 } from 'date-fns';
 import { zhCN, enUS } from 'date-fns/locale';
-import { CalendarState, CityRecord, Activity, Weather } from '@/types';
+import { CalendarState, CityRecord, Activity } from '@/types';
 import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, XMarkIcon, TrashIcon } from '@heroicons/react/24/outline';
 // 导入 react-icons 天气图标
 import {
-  WiDaySunny, WiNightClear, WiCloud, WiCloudy, WiFog, WiShowers, WiRain, 
-  WiThunderstorm, WiSnow, WiDayCloudy, WiNightAltCloudy, WiRainMix, 
-  WiDayShowers, WiNightAltShowers, WiDayRain, WiNightAltRain, WiDaySnow, 
-  WiNightAltSnow, WiDaySleet, WiNightAltSleet, WiNa, WiTornado, 
-  WiDust, WiSnowflakeCold, WiSleet, WiRaindrop, WiRaindrops,
+  WiDaySunny, WiNightClear, WiCloud, WiCloudy, WiFog, WiRain, 
+  WiThunderstorm, WiSnow, WiDayCloudy, WiRainMix, 
+  WiDayShowers, WiDaySnow, WiNa, WiDust, WiSnowflakeCold, 
+  WiSleet, WiRaindrop, WiRaindrops,
   WiStrongWind
 } from 'react-icons/wi'; 
 
@@ -74,7 +71,7 @@ const getWeatherIcon = (condition: string | undefined): React.ReactElement => {
     // Wrap in a fragment, animation applied individually if needed later
     iconComponent = <><WiStrongWind className={iconSize} /><WiSnow className={iconSize} /></>;
   } else if (lowerCondition.includes('ice pellets')) {
-    iconComponent = <WiDaySleet className={iconSize} />;
+    iconComponent = <WiRainMix className={iconSize} />;
   } else if (lowerCondition.includes('dust') || lowerCondition.includes('sand')) {
       iconComponent = <WiDust className={iconSize} />;
   }
