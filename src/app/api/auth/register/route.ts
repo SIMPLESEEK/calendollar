@@ -62,9 +62,10 @@ export async function POST(request: Request) {
     await usersCollection.insertOne(newUserDocument);
     
     // 从插入结果中获取用户数据（不含密码）用于返回
-    // 注意：直接使用 newUserDocument 并移除 password 可能更简单
-    // const insertedUser = await usersCollection.findOne({_id: result.insertedId});
-    const { password: _password, ...userWithoutPassword } = newUserDocument; // Renamed _ to _password
+    // Use copy and delete instead of destructuring exclusion
+    const userWithoutPassword = { ...newUserDocument };
+    // We need to tell TypeScript it's okay to delete password here
+    delete (userWithoutPassword as { password?: string }).password; 
 
     return NextResponse.json(
       { message: '注册成功', user: userWithoutPassword },
