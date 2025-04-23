@@ -1,11 +1,12 @@
 import clientPromise from "@/lib/mongodb";
-import { MongoClient, Db, Collection } from 'mongodb';
+import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
+import { DayData } from '@/types';
 
 // Define the structure for calendar data stored in MongoDB (可以放在 types 文件中共享)
 interface CalendarData {
-  _id?: any; // MongoDB's ObjectId
+  _id?: ObjectId; // Use ObjectId type for _id
   userId: string;
-  events: Record<string, any>; // Store the events object
+  events: Record<string, DayData>; // Use DayData for event values
 }
 
 export async function getCalendarCollection(): Promise<{ client: MongoClient, db: Db, collection: Collection<CalendarData> }> {

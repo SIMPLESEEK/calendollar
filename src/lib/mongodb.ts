@@ -11,17 +11,18 @@ let client: MongoClient
 let clientPromise: Promise<MongoClient>
 
 if (process.env.NODE_ENV === 'development') {
-  // 在开发模式下，使用全局变量以便热重载不会创建过多的连接
-  // @ts-ignore
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  // @ts-expect-error - Use ts-expect-error instead of ts-ignore
   if (!global._mongoClientPromise) {
     client = new MongoClient(uri, options)
-    // @ts-ignore
+    // @ts-expect-error - Use ts-expect-error instead of ts-ignore
     global._mongoClientPromise = client.connect()
   }
-  // @ts-ignore
+  // @ts-expect-error - Use ts-expect-error instead of ts-ignore
   clientPromise = global._mongoClientPromise
 } else {
-  // 在生产模式下，不需要全局变量
+  // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options)
   clientPromise = client.connect()
 }

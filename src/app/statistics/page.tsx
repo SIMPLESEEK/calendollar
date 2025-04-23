@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios'; // 导入 axios
+import axios, { AxiosError } from 'axios'; // Import AxiosError
 
 // TODO: Import charting library later
 
@@ -34,33 +34,8 @@ export default function StatisticsPage() {
 
   // --- getCityColor Functionality ---
   const [cityColorMap, setCityColorMap] = useState<Map<string, string>>(new Map());
-  let nextColorIndex = 0; // Simplified index management for this context
-
-  // Need to populate color map when statsData loads or changes
-  useEffect(() => {
-    if (statsData?.cityDurations) {
-      const newMap = new Map(cityColorMap);
-      let updated = false;
-      Object.keys(statsData.cityDurations).forEach(city => {
-        if (!newMap.has(city.trim().toLowerCase())) { // Check lowercase normalized city
-          const color = cityColorPalette[nextColorIndex % cityColorPalette.length];
-          newMap.set(city.trim().toLowerCase(), color); // Store lowercase normalized city
-          nextColorIndex = (nextColorIndex + 1) % cityColorPalette.length;
-          updated = true;
-        }
-      });
-      if (updated) {
-        setCityColorMap(newMap);
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statsData]); // Dependency on statsData
-
-  const getCityColorClass = useCallback((city: string): string => {
-      const normalizedCity = city.trim().toLowerCase(); // Normalize when getting
-      return cityColorMap.get(normalizedCity) || 'bg-gray-400'; // Default color
-  }, [cityColorMap]);
-  // --- End getCityColor Functionality ---
+  // We need a way to track the color index persistently across renders if needed,
+  // but for assigning colors *during* a fetch, it's better inside the fetch function.
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -68,6 +43,18 @@ export default function StatisticsPage() {
       router.push('/auth/login');
     }
   }, [status, router]);
+
+  const getCityColorClass = useCallback((city: string): string => {
+      if (cityColorMap.has(city)) {
+          return cityColorMap.get(city) || '';
+      }
+      // Assigning color should ideally happen when data is processed,
+      // not during render. This function only retrieves.
+      // The logic to *assign* the color will be moved into handleFetchStats.
+      // If a city somehow misses assignment, return a default.
+      return 'bg-gray-400'; // Default/fallback color
+  }, [cityColorMap]);
+  // --- End getCityColor Functionality ---
 
   const handleFetchStats = async () => {
     if (!startDate || !endDate) {
@@ -77,9 +64,19 @@ export default function StatisticsPage() {
     setLoading(true);
     setError(null);
     setStatsData(null);
-    // Reset color map index for new fetch potentially
-    nextColorIndex = 0;
-    setCityColorMap(new Map()); // Clear old map for new data
+    
+    // Reset color map and index *inside* the fetch function
+    let localNextColorIndex = 0;
+    const newCityColorMap = new Map<string, string>();
+    const assignColor = (city: string): string => {
+        if (newCityColorMap.has(city)) {
+            return newCityColorMap.get(city)!;
+        }
+        const color = cityColorPalette[localNextColorIndex % cityColorPalette.length];
+        newCityColorMap.set(city, color);
+        localNextColorIndex++;
+        return color;
+    };
 
     try {
       // 准备 API 参数
@@ -92,10 +89,27 @@ export default function StatisticsPage() {
       }
 
       const response = await axios.get<StatisticsData>(`/api/statistics`, { params });
-      setStatsData(response.data);
-    } catch (err: any) {
+      const fetchedData = response.data;
+      
+      // Process fetched data to assign colors *before* setting state
+      if (fetchedData && fetchedData.cityDurations) {
+          Object.keys(fetchedData.cityDurations).forEach(city => {
+              assignColor(city); // Assign color to each city found in the data
+          });
+      }
+      
+      setCityColorMap(newCityColorMap); // Update the state with the new map
+      setStatsData(fetchedData); // Set the fetched data
+      
+    } catch (err: unknown) { // Use unknown for better type safety
       console.error('Error fetching statistics:', err);
-      const message = err.response?.data?.error || err.message || '获取统计数据失败，请稍后重试。';
+      let message = '获取统计数据失败，请稍后重试。';
+      if (axios.isAxiosError(err)) {
+           // Access err.response.data safely
+           message = err.response?.data?.error || err.message || message;
+      } else if (err instanceof Error) {
+           message = err.message; // Standard error message
+      }
       setError(message);
     } finally {
       setLoading(false);
