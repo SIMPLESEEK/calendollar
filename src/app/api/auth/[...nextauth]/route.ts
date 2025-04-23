@@ -1,7 +1,7 @@
 import NextAuth, { User as NextAuthUser, Session, AuthOptions } from 'next-auth';
 import { Adapter, AdapterUser } from 'next-auth/adapters';
 import { JWT } from 'next-auth/jwt';
-import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/credentials';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 // import { User } from '@/types'; // 使用 next-auth 的 User 类型或适配器提供的类型
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";

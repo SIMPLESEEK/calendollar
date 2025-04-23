@@ -42,8 +42,13 @@ export default function Register() {
       
       // 注册成功后跳转到登录页
       router.push('/auth/login?registered=true');
-    } catch (err: any) {
-      setError(err.message || '注册过程中发生错误');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || '注册过程中发生错误');
+      } else {
+        setError('注册过程中发生未知错误');
+        console.error('Caught a non-Error object during registration:', err);
+      }
     } finally {
       setLoading(false);
     }

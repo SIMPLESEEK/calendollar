@@ -58,12 +58,13 @@ export async function POST(request: Request) {
     };
     
     // 插入用户到数据库
-    const result = await usersCollection.insertOne(newUserDocument);
+    // const result = await usersCollection.insertOne(newUserDocument); // Removed unused result assignment
+    await usersCollection.insertOne(newUserDocument);
     
     // 从插入结果中获取用户数据（不含密码）用于返回
     // 注意：直接使用 newUserDocument 并移除 password 可能更简单
     // const insertedUser = await usersCollection.findOne({_id: result.insertedId});
-    const { password: _, ...userWithoutPassword } = newUserDocument;
+    const { password: _password, ...userWithoutPassword } = newUserDocument; // Renamed _ to _password
 
     return NextResponse.json(
       { message: '注册成功', user: userWithoutPassword },
