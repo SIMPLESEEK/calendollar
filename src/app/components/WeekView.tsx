@@ -21,9 +21,8 @@ import {
   WiDaySunny, WiNightClear, WiCloud, WiCloudy, WiFog, WiShowers, WiRain, 
   WiThunderstorm, WiSnow, WiDayCloudy, WiNightAltCloudy, WiRainMix, 
   WiDayShowers, WiNightAltShowers, WiDayRain, WiNightAltRain, WiDaySnow, 
-  WiNightAltSnow, WiDaySleet, WiNightAltSleet, WiNa, WiTornado, WiHurricane, 
-  WiDayHaze, WiDayFog, WiNightFog, WiSmoke, WiDust, WiSandstorm, WiVolcano, 
-  WiSnowflakeCold, WiSleet, WiRaindrop, WiRaindrops,
+  WiNightAltSnow, WiDaySleet, WiNightAltSleet, WiNa, WiTornado, 
+  WiDust, WiSnowflakeCold, WiSleet, WiRaindrop, WiRaindrops,
   WiStrongWind
 } from 'react-icons/wi'; 
 

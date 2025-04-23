@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import axios, { AxiosError } from 'axios'; // Import AxiosError
+import axios from 'axios'; // Removed AxiosError import
 
 // TODO: Import charting library later
 
