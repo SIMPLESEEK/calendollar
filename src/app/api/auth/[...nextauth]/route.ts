@@ -35,7 +35,7 @@ declare module "next-auth" {
 // const users: User[] = [ ... ];
 
 // 将 NextAuth 配置提取到 authOptions 变量中，并显式指定类型
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise) as Adapter,
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
