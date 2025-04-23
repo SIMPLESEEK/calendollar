@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 旅行日历应用
 
-## Getting Started
+这是一个专为频繁出差人士设计的日历应用，用于记录每日所在城市、活动安排和会面人员。
 
-First, run the development server:
+## 功能特点
+
+- **年视图**：概览全年，以月份为单位显示日期
+- **月视图**：以月为单位，在每一天下方显示最多两个城市信息
+- **周视图**：详细记录一周每天的城市和活动信息
+- **天气信息**：自动获取并显示城市天气情况
+- **用户认证**：支持邮箱密码和GitHub登录，保护个人隐私
+
+## 技术栈
+
+- Next.js 15 + App Router
+- TypeScript
+- Tailwind CSS
+- Next Auth
+- date-fns
+
+## 如何使用
+
+### 安装依赖
+
+```bash
+npm install
+```
+
+### 开发环境
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 生产构建
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 部署
 
-## Learn More
+该应用可以轻松部署到Vercel：
 
-To learn more about Next.js, take a look at the following resources:
+1. Fork本项目到您的GitHub账户
+2. 在Vercel中导入项目
+3. 设置以下环境变量:
+   - `NEXTAUTH_SECRET`: 用于JWT加密的密钥
+   - `NEXTAUTH_URL`: 您的应用URL
+   - `GITHUB_ID`: GitHub OAuth App ID (可选)
+   - `GITHUB_SECRET`: GitHub OAuth App Secret (可选)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 测试账户
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+您可以使用以下测试账户登录系统：
 
-## Deploy on Vercel
+- 邮箱: test@example.com
+- 密码: password123
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 使用说明
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **登录/注册**：首次使用需注册账户或使用GitHub登录
+2. **切换视图**：点击顶部的"年视图"、"月视图"或"周视图"按钮
+3. **添加城市记录**：在周视图中点击"添加城市"按钮
+4. **添加活动**：在城市记录下方点击"添加活动"按钮
+5. **删除记录**：点击记录旁边的"X"按钮
+
+## 注意事项
+
+- 本应用使用浏览器本地存储来保存数据，使用多设备时数据不会同步
+- 实际部署时建议使用数据库来持久化存储用户数据
+- 天气API在当前版本使用模拟数据，实际使用时可集成真实天气API
+
+## 许可证
+
+MIT
