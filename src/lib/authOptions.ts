@@ -1,5 +1,5 @@
 // src/lib/authOptions.ts
-import NextAuth, { User as NextAuthUser, Session, AuthOptions } from 'next-auth';
+import { User as NextAuthUser, Session, AuthOptions } from 'next-auth';
 import { Adapter, AdapterUser } from 'next-auth/adapters';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
